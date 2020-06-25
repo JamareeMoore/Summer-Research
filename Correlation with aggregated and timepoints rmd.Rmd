@@ -1,0 +1,47 @@
+---
+title: "Correlation with aggregated data and timepoints with Cleo"
+author: "Jamaree Moore"
+date: "6/25/2020"
+output: html_document
+---
+
+#correlating r0 by temperature with aggregated data and temp data 
+
+library(readr)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(chron)
+library(correlation)
+library(tidyverse)
+
+correlated_156_timepoints <- read_csv("timepoints_156_final_with_r0.csv", col_types=cols("R0"=col_double()))
+
+correlated_39_timpeoints <- read_csv("timepoints_39_final_with_r0.csv", col_types=cols("R0"=col_double()))
+
+
+# we think temperature predicts R0, so R0 is y and temperature is X.
+#let's plot the data together to see what it looks like. we can see there's a lot of noise in this data - we should run it by dr. qin
+plot(correlated_156_timepoints$temp_in_K, correlated_156_timepoints$R0)
+
+#these are linear models, for nonlinear data unfortunately
+lm(correlated_156_timepoints$R0~correlated_156_timepoints$temp_in_K) 
+#this makes a summary of the lm, I would read the documentation of how to interpret a linear model in R.
+summary(lm(correlated_156_timepoints$R0~correlated_156_timepoints$temp_in_K)
+) 
+plot(lm(correlated_156_timepoints$R0~correlated_156_timepoints$temp_in_K)
+) #lastly these are plots that show the residuals of the linear model. the data is not normal, so that's why it looks weird
+
+#then I would do this for the 39 timepoints data set. I'm not sure if working with the unaggregated or the aggregated datat is better. I would ask Dr. qin. I would also show him these plots so he can give input on what to do next!
+
+plot(correlated_39_timpeoints$temp_in_K, correlated_39_timpeoints$R0)
+
+lm(correlated_39_timpeoints$R0~correlated_39_timpeoints$temp_in_K)
+
+summary(lm(correlated_39_timpeoints$R0~correlated_39_timpeoints$temp_in_K)
+)
+
+plot(lm(correlated_39_timpeoints$R0~correlated_39_timpeoints$temp_in_K)
+)
+
+
